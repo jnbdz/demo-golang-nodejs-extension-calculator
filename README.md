@@ -4,10 +4,25 @@
 Demo: Golang Node.js Extension: Calculator
 
 ## :cloud: Installation
+Make sure to have the `npm` package `node-gyp` installed.
 
 ```sh
 $ npm i --save demo-golang-nodejs-extension-calculator
 ```
+
+You might need to run:
+
+```sh
+npm install
+```
+
+It will execute:
+
+```sh
+go build -buildmode c-archive -o src/calculator.a src/calculator.go && node-gyp rebuild
+```
+
+If you run into some errors you might need to install other packages on your system like: `gcc` and `build-essential`.
 
 ## :clipboard: Example
 
@@ -118,20 +133,20 @@ void add(const FunctionCallbackInfo<Value>& args)
 It is a good idea to validate the function arguments before passing them to golang scripts.
 
 ```c
-    // Check the number of arguments passed.
-    if (args.Length() < 2) {
-      // Throw an Error that is passed back to JavaScript
-      isolate->ThrowException(Exception::TypeError(
-          String::NewFromUtf8(isolate, "Wrong number of arguments")));
-      return;
-    }
+// Check the number of arguments passed.
+if (args.Length() < 2) {
+  // Throw an Error that is passed back to JavaScript
+  isolate->ThrowException(Exception::TypeError(
+      String::NewFromUtf8(isolate, "Wrong number of arguments")));
+  return;
+}
 
-    // Check the argument types
-    if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
-      isolate->ThrowException(Exception::TypeError(
-          String::NewFromUtf8(isolate, "Wrong arguments")));
-      return;
-    }
+// Check the argument types
+if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
+  isolate->ThrowException(Exception::TypeError(
+      String::NewFromUtf8(isolate, "Wrong arguments")));
+  return;
+}
 ```
 
 Then you use you golang method:
@@ -143,12 +158,48 @@ double total = Sum(args[0]->NumberValue(), args[1]->NumberValue());
 The rest is for Node.js:
 
 ```c
-  void init(Local<Object> exports) {
-    NODE_SET_METHOD(exports, "add", add);
-  }
+void init(Local<Object> exports) {
+NODE_SET_METHOD(exports, "add", add);
+}
 
-  NODE_MODULE(calculator, init)
+NODE_MODULE(calculator, init)
 ```
+
+You use `NODE_SET_METHOD` to set the methods you want to use inside of Node.js:
+
+```c
+NODE_SET_METHOD(exports, "add", add);
+```
+
+You also need this file at the root of your project: `binding.gyp`. It is self explanatory.
+
+```json
+{
+  "targets": [
+    {
+      "target_name": "node-calculator",
+      "sources": [
+        "src/node-calculator.cc"
+      ],
+      "libraries": [
+        "../src/calculator.a"
+      ],
+    },
+  ],
+}
+```
+
+The file `calculator.a` is also automatically generated. It should not be commited.
+
+When you run `npm install` it runs:
+
+```sh
+go build -buildmode c-archive -o src/calculator.a src/calculator.go && node-gyp rebuild
+```
+
+The first command generates `calculator.a` and `calculator.h`. With the other command `node-gyp rebuild` it generates `build/` directory.
+
+Make sure you have `node-gyp` installed. You can install it with `npm`.
 
 ## :scroll: License
 

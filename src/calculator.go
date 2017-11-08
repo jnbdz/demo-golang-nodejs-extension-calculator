@@ -1,4 +1,3 @@
-// package name: calculator
 package main
 
 import "C"
