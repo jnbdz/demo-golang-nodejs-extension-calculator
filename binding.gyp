@@ -3,10 +3,10 @@
     {
       "target_name": "node-calculator",
       "sources": [
-        "node-calculator.cc"
+        "src/node-calculator.cc"
       ],
       "libraries": [
-        "../calculator.a"
+        "../src/calculator.a"
       ],
     },
   ],
