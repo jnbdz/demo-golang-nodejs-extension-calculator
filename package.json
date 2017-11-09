@@ -2,9 +2,9 @@
   "name": "demo-golang-nodejs-extension-calculator",
   "version": "1.0.0",
   "description": "Demo of golang node.js extension calculator.",
-  "main": "demo.js",
+  "main": "calculator.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "install": "go build -buildmode c-archive -o src/calculator.a src/calculator.go && node-gyp rebuild"
   },
   "repository": {
@@ -15,7 +15,9 @@
     "golang",
     "go",
     "extension",
-    "calculator"
+    "calculator",
+    "tutorial",
+    "demo"
   ],
   "author": "Jean-Nicolas Boulay <jn@yaloub.com>",
   "license": "MIT",
@@ -23,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/jnbdz/demo-golang-nodejs-extension-calculator/issues"
   },
-  "homepage": "https://github.com/jnbdz/demo-golang-nodejs-extension-calculator#readme"
+  "homepage": "https://github.com/jnbdz/demo-golang-nodejs-extension-calculator#readme",
+  "devDependencies": {
+    "jest": "^21.2.1"
+  }
 }

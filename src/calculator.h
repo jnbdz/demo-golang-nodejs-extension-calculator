@@ -55,6 +55,12 @@ extern "C" {
 
 extern GoFloat64 Sum(GoFloat64 p0, GoFloat64 p1);
 
+extern GoFloat64 Subtract(GoFloat64 p0, GoFloat64 p1);
+
+extern GoFloat64 Multiply(GoFloat64 p0, GoFloat64 p1);
+
+extern GoFloat64 Divide(GoFloat64 p0, GoFloat64 p1);
+
 #ifdef __cplusplus
 }
 #endif
